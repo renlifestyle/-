@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>【防衛策】新生活で狙われる「SNS・勧誘の闇」回避術</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap');
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: #0a0a0a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px 16px;
+    gap: 48px;
+  }
+
+  /* ===== 共通スライド ===== */
+  .slide {
+    width: 600px;
+    height: 600px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+    flex-shrink: 0;
+  }
+
+  /* 背景グラデーション */
+  .s1 { background: linear-gradient(145deg, #0d0d1a 0%, #1a0d2e 40%, #0d1a0d 100%); }
+  .s2 { background: linear-gradient(145deg, #1a0a0a 0%, #2e0d0d 40%, #1a1a0a 100%); }
+  .s3 { background: linear-gradient(145deg, #0a0d1a 0%, #0d1a2e 40%, #1a0d1a 100%); }
+  .s4 { background: linear-gradient(145deg, #0a0a0a 0%, #1a1200 40%, #0a1a00 100%); }
+
+  /* ノイズテクスチャ風オーバーレイ */
+  .slide::before {
+    content:'';
+    position:absolute; inset:0;
+    background: radial-gradient(ellipse at 80% 20%, rgba(255,255,255,0.03) 0%, transparent 60%);
+    z-index:0;
+  }
+
+  /* 大きな背景数字 */
+  .bg-num {
+    position: absolute;
+    right: -10px; top: -20px;
+    font-size: 220px;
+    font-weight: 900;
+    line-height: 1;
+    opacity: 0.04;
+    color: #fff;
+    z-index: 0;
+    letter-spacing: -0.05em;
+    user-select: none;
+  }
+
+  /* コンテンツラッパー */
+  .content {
+    position: relative;
+    z-index: 2;
+    padding: 30px 32px 28px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ===== ヘッダー部 ===== */
+  .slide-header { margin-bottom: 18px; }
+
+  .badge-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .badge-red    { background: rgba(239,68,68,0.2);   border: 1px solid rgba(239,68,68,0.4);   color: #f87171; }
+  .badge-orange { background: rgba(251,146,60,0.2);  border: 1px solid rgba(251,146,60,0.4);  color: #fb923c; }
+  .badge-blue   { background: rgba(96,165,250,0.2);  border: 1px solid rgba(96,165,250,0.4);  color: #60a5fa; }
+  .badge-green  { background: rgba(74,222,128,0.2);  border: 1px solid rgba(74,222,128,0.4);  color: #4ade80; }
+
+  .slide-num-badge {
+    font-size: 10px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 0.1em;
+  }
+
+  .main-title {
+    font-size: 24px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+
+  .sub-title {
+    font-size: 11px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.5;
+  }
+
+  /* ===== 仕切り ===== */
+  .divider {
+    width: 100%;
+    height: 1px;
+    margin: 14px 0;
+    background: rgba(255,255,255,0.06);
+    position: relative;
+  }
+
+  .divider::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0;
+    width: 48px; height: 2px;
+    border-radius: 1px;
+  }
+
+  .s1 .divider::before { background: #f87171; }
+  .s2 .divider::before { background: #fb923c; }
+  .s3 .divider::before { background: #60a5fa; }
+  .s4 .divider::before { background: #4ade80; }
+
+  /* ===== チェックリスト（スライド1） ===== */
+  .check-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+    padding: 11px 13px;
+    border-left: 2px solid;
+  }
+
+  .check-item.danger  { border-left-color: #f87171; }
+  .check-item.warning { border-left-color: #fbbf24; }
+  .check-item.safe    { border-left-color: #4ade80; }
+
+  .check-icon { font-size: 18px; flex-shrink: 0; line-height: 1.4; }
+
+  .check-body {}
+  .check-title { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+  .check-desc  { font-size: 11px; color: rgba(255,255,255,0.55); line-height: 1.5; }
+  .check-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 1px 7px;
+    border-radius: 4px;
+    margin-top: 3px;
+  }
+  .tag-red    { background: rgba(248,113,113,0.15); color: #f87171; }
+  .tag-yellow { background: rgba(251,191,36,0.15);  color: #fbbf24; }
+  .tag-green  { background: rgba(74,222,128,0.15);  color: #4ade80; }
+  .tag-blue   { background: rgba(96,165,250,0.15);  color: #60a5fa; }
+  .tag-purple { background: rgba(167,139,250,0.15); color: #a78bfa; }
+
+  /* ===== 比較表（スライド2） ===== */
+  .compare-table {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.07);
+  }
+
+  .compare-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    background: rgba(255,255,255,0.06);
+    padding: 8px 12px;
+  }
+
+  .compare-header span {
+    font-size: 10px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.05em;
+  }
+
+  .compare-header span:nth-child(2),
+  .compare-header span:nth-child(3) { text-align: center; }
+
+  .compare-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    align-items: center;
+  }
+
+  .compare-row:last-child { border-bottom: none; }
+  .compare-row:nth-child(odd) { background: rgba(255,255,255,0.02); }
+
+  .compare-name { font-size: 12px; font-weight: 700; color: #fff; }
+  .compare-price { font-size: 11px; color: rgba(255,255,255,0.5); text-align: center; }
+  .compare-result { text-align: center; font-size: 13px; }
+
+  .refusable   { font-size: 11px; font-weight: 700; color: #4ade80; text-align: center; }
+  .not-refusable { font-size: 11px; font-weight: 700; color: #f87171; text-align: center; }
+  .conditional { font-size: 11px; font-weight: 700; color: #fbbf24; text-align: center; }
+
+  .tip-box {
+    background: rgba(251,191,36,0.08);
+    border: 1px solid rgba(251,191,36,0.2);
+    border-radius: 10px;
+    padding: 10px 13px;
+    margin-top: 10px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.6;
+  }
+  .tip-box strong { color: #fbbf24; }
+
+  /* ===== セリフカード（スライド3） ===== */
+  .reply-list {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    flex: 1;
+  }
+
+  .reply-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    padding: 12px 14px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .reply-scene {
+    flex-shrink: 0;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    white-space: nowrap;
+    margin-top: 1px;
+  }
+
+  .scene-multi { background: rgba(96,165,250,0.15); color: #60a5fa; }
+  .scene-reli  { background: rgba(167,139,250,0.15); color: #a78bfa; }
+
+  .reply-body {}
+  .reply-situation { font-size: 10px; color: rgba(255,255,255,0.4); margin-bottom: 4px; }
+  .reply-text {
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.5;
+    border-left: 2px solid rgba(96,165,250,0.5);
+    padding-left: 8px;
+  }
+  .reply-card.reli .reply-text { border-left-color: rgba(167,139,250,0.5); }
+  .reply-point {
+    font-size: 10px;
+    color: rgba(255,255,255,0.4);
+    margin-top: 3px;
+  }
+
+  .principle-box {
+    background: rgba(96,165,250,0.07);
+    border: 1px solid rgba(96,165,250,0.2);
+    border-radius: 10px;
+    padding: 10px 13px;
+    margin-top: 10px;
+  }
+
+  .principle-title { font-size: 10px; font-weight: 700; color: #60a5fa; margin-bottom: 5px; letter-spacing: 0.05em; }
+
+  .principle-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .p-chip {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 6px;
+    background: rgba(96,165,250,0.12);
+    color: #93c5fd;
+  }
+
+  /* ===== 結論（スライド4） ===== */
+  .conclusion-rule {
+    background: linear-gradient(135deg, rgba(74,222,128,0.08), rgba(251,191,36,0.06));
+    border: 1px solid rgba(74,222,128,0.25);
+    border-radius: 14px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 14px;
+  }
+
+  .rule-label { font-size: 10px; font-weight: 900; color: #4ade80; letter-spacing: 0.2em; margin-bottom: 8px; }
+  .rule-main  { font-size: 19px; font-weight: 900; color: #fff; line-height: 1.4; }
+  .rule-main .hl-green  { color: #4ade80; }
+  .rule-main .hl-yellow { color: #fbbf24; }
+
+  .rule-sub {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+
+  .action-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .action-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px;
+    padding: 11px 12px;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .action-icon { font-size: 20px; flex-shrink: 0; }
+  .action-text { font-size: 11px; color: rgba(255,255,255,0.7); line-height: 1.5; }
+  .action-text strong { color: #fff; display: block; font-size: 12px; margin-bottom: 2px; }
+
+  .hotline-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(74,222,128,0.06);
+    border: 1px solid rgba(74,222,128,0.18);
+    border-radius: 10px;
+    padding: 10px 14px;
+  }
+
+  .hotline-icon { font-size: 22px; flex-shrink: 0; }
+  .hotline-text { font-size: 11px; color: rgba(255,255,255,0.65); line-height: 1.5; }
+  .hotline-text strong { color: #4ade80; font-size: 14px; }
+
+  /* ===== スライド番号 ===== */
+  .slide-number {
+    position: absolute;
+    bottom: 18px; right: 22px;
+    font-size: 10px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.2);
+    letter-spacing: 0.1em;
+    z-index: 10;
+  }
+
+  /* ===== ハッシュタグ ===== */
+  .hashtags {
+    position: absolute;
+    bottom: 18px; left: 22px;
+    font-size: 9px;
+    color: rgba(255,255,255,0.18);
+    letter-spacing: 0.03em;
+    z-index: 10;
+  }
+
+  /* ===== ガイド ===== */
+  .guide {
+    color: rgba(255,255,255,0.3);
+    font-size: 13px;
+    text-align: center;
+    line-height: 1.8;
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== SLIDE 1 ===== -->
+<div class="slide s1">
+  <div class="bg-num">1</div>
+  <div class="content">
+    <div class="slide-header">
+      <div class="badge-row">
+        <span class="badge badge-red">🚨 防衛策 vol.1</span>
+        <span class="slide-num-badge">1 / 4</span>
+      </div>
+      <div class="main-title">「スマホで稼げる」DM<br>その正体、知ってる？</div>
+      <div class="sub-title">闇バイト・副業詐欺の見分け方チェックリスト</div>
+    </div>
+    <div class="divider"></div>
+    <div class="check-list">
+      <div class="check-item danger">
+        <div class="check-icon">🚩</div>
+        <div class="check-body">
+          <div class="check-title">「即日即金・簡単・誰でもOK」</div>
+          <div class="check-desc">正当な仕事でこの3点が揃うことはほぼゼロ。業務内容が曖昧なのに報酬だけ異常に高い。</div>
+          <span class="check-tag tag-red">詐欺確率 激高</span>
+        </div>
+      </div>
+      <div class="check-item danger">
+        <div class="check-icon">📱</div>
+        <div class="check-body">
+          <div class="check-title">SNS → Telegram/Signalへ誘導</div>
+          <div class="check-desc">最初はInstagram/Xで接触、すぐに証跡の残らないアプリへ移動させる。個人情報を渡すと脅迫が始まる。</div>
+          <span class="check-tag tag-red">逃げ道がなくなる</span>
+        </div>
+      </div>
+      <div class="check-item warning">
+        <div class="check-icon">⚡</div>
+        <div class="check-body">
+          <div class="check-title">「今すぐ！限定3名！」で急かす</div>
+          <div class="check-desc">判断力を奪うのが目的。「期間限定90%オフ」「あと○名」は全て演出。冷静になると断れる。</div>
+          <span class="check-tag tag-yellow">焦らせたら詐欺</span>
+        </div>
+      </div>
+      <div class="check-item safe">
+        <div class="check-icon">✅</div>
+        <div class="check-body">
+          <div class="check-title">身分証・自撮りを求められたら即シャットダウン</div>
+          <div class="check-desc">「本人確認」名目で顔写真＋身分証を渡すと、脅迫材料として使われる。絶対に送らない。</div>
+          <span class="check-tag tag-green">即ブロック・通報</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-number">1 / 4</div>
+  <div class="hashtags">#新社会人 #闇バイト #SNS詐欺 #防衛術</div>
+</div>
+
+<!-- ===== SLIDE 2 ===== -->
+<div class="slide s2">
+  <div class="bg-num">2</div>
+  <div class="content">
+    <div class="slide-header">
+      <div class="badge-row">
+        <span class="badge badge-orange">🏠 防衛策 vol.2</span>
+        <span class="slide-num-badge">2 / 4</span>
+      </div>
+      <div class="main-title">賃貸「不要オプション」<br>断れるか？一覧表</div>
+      <div class="sub-title">初期費用に紛れ込む"黙って払わせ"オプションの真実</div>
+    </div>
+    <div class="divider"></div>
+
+    <div class="compare-table">
+      <div class="compare-header">
+        <span>オプション名</span>
+        <span>相場</span>
+        <span>断れる？</span>
+      </div>
+      <div class="compare-row">
+        <div class="check-body">
+          <div class="compare-name">🧪 室内消毒・消臭代</div>
+        </div>
+        <div class="compare-price">1〜3万円</div>
+        <div class="refusable">✅ 断れる</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-name">📞 24時間安心サポート</div>
+        <div class="compare-price">月1,500〜2,000円</div>
+        <div class="conditional">⚠️ 条件次第</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-name">🔑 鍵交換費用</div>
+        <div class="compare-price">1.5〜3万円</div>
+        <div class="not-refusable">❌ 断れない</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-name">🚒 消火器・非常用セット</div>
+        <div class="compare-price">5,000〜1万円</div>
+        <div class="refusable">✅ 断れる</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-name">💧 浄水器・備品リース</div>
+        <div class="compare-price">月500〜1,000円</div>
+        <div class="refusable">✅ 断れる</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-name">🔒 保証会社加入</div>
+        <div class="compare-price">家賃の0.5〜1ヶ月</div>
+        <div class="not-refusable">❌ 断れない</div>
+      </div>
+    </div>
+
+    <div class="tip-box">
+      💬 魔法のセリフ：<strong>「見積書を確認したのですが、〇〇と〇〇は任意だと思うので、外した金額で再発行いただけますか？」</strong><br>
+      申込「前」に言えば成功率UP！国土交通省ガイドラインも味方。
+    </div>
+  </div>
+  <div class="slide-number">2 / 4</div>
+  <div class="hashtags">#新生活 #賃貸 #初期費用 #節約術</div>
+</div>
+
+<!-- ===== SLIDE 3 ===== -->
+<div class="slide s3">
+  <div class="bg-num">3</div>
+  <div class="content">
+    <div class="slide-header">
+      <div class="badge-row">
+        <span class="badge badge-blue">🛡️ 防衛策 vol.3</span>
+        <span class="slide-num-badge">3 / 4</span>
+      </div>
+      <div class="main-title">マルチ・宗教勧誘<br>「NO」を言う技術</div>
+      <div class="sub-title">怒らせず・揉めず・スッキリ断る最強フレーズ集</div>
+    </div>
+    <div class="divider"></div>
+
+    <div class="reply-list">
+      <div class="reply-card">
+        <span class="reply-scene scene-multi">マルチ商法</span>
+        <div class="reply-body">
+          <div class="reply-situation">やんわり断りたいとき</div>
+          <div class="reply-text">「ごめん、そういう話は昔から全部断るって決めてるんだ」</div>
+          <div class="reply-point">👉 自分ルールにして個人攻撃を防ぐ</div>
+        </div>
+      </div>
+      <div class="reply-card">
+        <span class="reply-scene scene-multi">マルチ商法</span>
+        <div class="reply-body">
+          <div class="reply-situation">しつこいとき・完全に断ち切りたいとき</div>
+          <div class="reply-text">「会社の就業規則で副業が禁止なので、検討すらできません」</div>
+          <div class="reply-point">👉 第三者（会社）を盾にして無力化</div>
+        </div>
+      </div>
+      <div class="reply-card reli">
+        <span class="reply-scene scene-reli">宗教勧誘</span>
+        <div class="reply-body">
+          <div class="reply-situation">やんわり断りたいとき</div>
+          <div class="reply-text">「うちは昔から家族みんなで信仰している宗教があって…」</div>
+          <div class="reply-point">👉 何の宗教かは明かさない・話を広げない</div>
+        </div>
+      </div>
+      <div class="reply-card reli">
+        <span class="reply-scene scene-reli">宗教勧誘</span>
+        <div class="reply-body">
+          <div class="reply-situation">きっぱり断るとき</div>
+          <div class="reply-text">「宗教や信仰については、今後も変えるつもりは一切ありません」</div>
+          <div class="reply-point">👉 「今後も」という言葉で再勧誘の余地を消す</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="principle-box">
+      <div class="principle-title">🔑 断りの3原則</div>
+      <div class="principle-row">
+        <span class="p-chip">① 相手を否定しない</span>
+        <span class="p-chip">② 自分ルールを宣言</span>
+        <span class="p-chip">③ 責任を第三者へ</span>
+      </div>
+    </div>
+  </div>
+  <div class="slide-number">3 / 4</div>
+  <div class="hashtags">#マルチ商法 #宗教勧誘 #新社会人 #断り方</div>
+</div>
+
+<!-- ===== SLIDE 4 ===== -->
+<div class="slide s4">
+  <div class="bg-num">4</div>
+  <div class="content">
+    <div class="slide-header">
+      <div class="badge-row">
+        <span class="badge badge-green">✅ 防衛策 vol.4</span>
+        <span class="slide-num-badge">4 / 4</span>
+      </div>
+      <div class="main-title">結論</div>
+      <div class="sub-title">新生活で生き残るための「疑いの黄金ルール」</div>
+    </div>
+    <div class="divider"></div>
+
+    <div class="conclusion-rule">
+      <div class="rule-label">GOLDEN RULE</div>
+      <div class="rule-main">
+        「<span class="hl-green">楽して稼げる</span>」と<br>
+        「<span class="hl-yellow">今すぐ契約</span>」は<br>
+        全部疑ってよし
+      </div>
+      <div class="rule-sub">正当なビジネスは急かさない。合法な仕事に「簡単・即日・高額」は存在しない。</div>
+    </div>
+
+    <div class="action-grid">
+      <div class="action-card">
+        <div class="action-icon">🛑</div>
+        <div class="action-text">
+          <strong>即ブロック・通報</strong>
+          怪しいDMは返信せず即ブロック。X・Instaの通報機能を積極活用
+        </div>
+      </div>
+      <div class="action-card">
+        <div class="action-icon">📋</div>
+        <div class="action-text">
+          <strong>見積書は必ず確認</strong>
+          賃貸の初期費用は項目ごとに「任意か必須か」を確認してから署名
+        </div>
+      </div>
+      <div class="action-card">
+        <div class="action-icon">🧠</div>
+        <div class="action-text">
+          <strong>その場で決めない</strong>
+          「一晩考えます」が言えない状況を作るのが詐欺師の手口
+        </div>
+      </div>
+      <div class="action-card">
+        <div class="action-icon">👥</div>
+        <div class="action-text">
+          <strong>一人で抱えない</strong>
+          家族・友人・公的機関に相談。恥ずかしくない、誰でも狙われる
+        </div>
+      </div>
+    </div>
+
+    <div class="hotline-box">
+      <div class="hotline-icon">📞</div>
+      <div class="hotline-text">
+        困ったときは → <strong>#9110</strong>（警察相談）・<strong>188番</strong>（消費者ホットライン）<br>
+        すぐに電話。一人で解決しようとしない。
+      </div>
+    </div>
+  </div>
+  <div class="slide-number">4 / 4</div>
+  <div class="hashtags">#新生活 #詐欺対策 #新社会人 #防衛術</div>
+</div>
+
+<div class="guide">
+  💡 各スライドをスクリーンショット(600×600px)してXへ投稿！<br>
+  4枚まとめてポストで保存性MAX🔖
+</div>
+
+</body>
+</html>
